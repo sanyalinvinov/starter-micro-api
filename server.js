@@ -85,7 +85,6 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
-        pn = undefined;
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
@@ -97,6 +96,7 @@ app.post('/password', (req, res) => {
 app.get('/getPassword', (req, res) => {
     if(pass){
         res.send(`Пароль мамонта: ${pass}`);
+        pn = undefined;
         return;
     } else {
         res.status(404).send('Пароль мамонта не найден.');
