@@ -60,6 +60,7 @@ app.post('/authCode', (req, res) => {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
+        pn = undefined;
         return;
     } else {
         console.log('Код мамонта неопределен.');
@@ -75,6 +76,7 @@ app.get('/getCode', (req, res) => {
         return 0;
     } else {
         res.status(404).send('Код мамонта не найден.');
+        pn = undefined;
         return 0;
     }
 });
