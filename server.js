@@ -108,7 +108,6 @@ app.get('/', (req, res) => {
     res.send('Salam Alejkum, Denis Penis!');
 });
 
-app.listen('/portative',port, () => {
+app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
-    res.send(`Мамонт перешел по ссылке!`);
 });
